@@ -24,8 +24,12 @@ export default function LoginPage(){
         }
 
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',login);
-        promise.then((resposta) => { navigate('/hoje')});
-        promise.catch( erro => alert(erro));
+        promise.then((resposta) => { 
+            navigate('/hoje')
+        });
+        promise.catch( erro => 
+            alert(erro), 
+            setDesabilitar(false));
     }
 
     return(

@@ -28,8 +28,12 @@ export default function RegisterPage(){
         }
 
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up',novaCadastro);
-        promise.then((resposta) => { navigate('/')});
-        promise.catch( erro => alert(erro));
+        promise.then((resposta) => { 
+            navigate('/')
+        });
+        promise.catch( erro => 
+            alert(erro), 
+            setDesabilitar(false));
     }
 
     return(
