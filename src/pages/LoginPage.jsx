@@ -1,15 +1,16 @@
 import { Link, useNavigate } from "react-router-dom"
 import {Button, ButtonRetorno,Container,Input} from "./../styles/StyleInicio"
 import logo from "../assets/logoTrackIt.png"
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import Context from "../Context";
 
 export default function LoginPage(){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [desabilitar,setDesabilitar] = useState(false);
-    
+    const {image, setImage} = useContext(Context);
     const navigate = useNavigate();
 
     function logar(event){
@@ -25,6 +26,8 @@ export default function LoginPage(){
 
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',login);
         promise.then((resposta) => { 
+            console.log(resposta)
+            setImage(resposta.data.image)
             navigate('/hoje')
         });
         promise.catch( erro => 

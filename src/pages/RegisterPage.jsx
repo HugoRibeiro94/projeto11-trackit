@@ -1,14 +1,15 @@
 import { Link, useNavigate } from "react-router-dom"
 import {Button, ButtonRetorno,Container,Input} from "./../styles/StyleInicio"
 import logo from "../assets/logoTrackIt.png"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import axios from "axios";
+import Context from "../Context";
 
 export default function RegisterPage(){
 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
-    const [image, setImage] = useState("");
+    const {image, setImage} = useContext(Context);
     const [password, setPassword] = useState("");
     const [desabilitar,setDesabilitar] = useState(false);
 
