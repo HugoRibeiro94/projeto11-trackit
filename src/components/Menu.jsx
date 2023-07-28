@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 
 export default function Menu(){
     return(
-        <Footer>
+        <Footer data-test="menu">
             <Link to="/habitos">
-                <ButtonMenu>Habitos</ButtonMenu>
+                <ButtonMenu data-test="habit-link">Habitos</ButtonMenu>
             </Link>
             <Link to="/hoje">
-                <ButtonToday>Hoje</ButtonToday>
+                <ButtonToday data-test="today-link">Hoje</ButtonToday>
             </Link>
             <Link to="/historico">
-                <ButtonMenu>Historico</ButtonMenu>
+                <ButtonMenu data-test="history-link">Historico</ButtonMenu>
             </Link>
         </Footer>
     )

@@ -8,9 +8,9 @@ export default function Topo(){
     const {image, setImage} = useContext(Context);
 
     return(
-        <Header>
+        <Header data-test="header">
             <img src={logoTopo}/>
-            <img src={image}/>
+            <img data-test="avatar" src={image}/>
         </Header>
     )
 }
