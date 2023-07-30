@@ -7,7 +7,6 @@ import Footer from "../components/Menu";
 export default function TodayPage(){
 
     const {image, setImage} = useContext(Context);
-    console.log(image);
     return(
         <>
             <Header/>

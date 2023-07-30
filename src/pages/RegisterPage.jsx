@@ -33,7 +33,7 @@ export default function RegisterPage(){
             navigate('/')
         });
         promise.catch( erro => 
-            alert(erro), 
+            alert(erro.response.data.message), 
             setDesabilitar(false));
     }
 

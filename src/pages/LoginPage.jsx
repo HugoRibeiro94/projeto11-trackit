@@ -4,6 +4,7 @@ import logo from "../assets/logoTrackIt.png"
 import { useContext, useState } from "react";
 import axios from "axios";
 import Context from "../Context";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function LoginPage(){
 
@@ -11,6 +12,10 @@ export default function LoginPage(){
     const [password, setPassword] = useState("");
     const [desabilitar,setDesabilitar] = useState(false);
     const {image, setImage} = useContext(Context);
+    const [animacao, setAnimacao] = useState(undefined);
+
+    const {token, setToken} = useContext(Context);
+
     const navigate = useNavigate();
 
     function logar(event){
@@ -26,13 +31,15 @@ export default function LoginPage(){
 
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',login);
         promise.then((resposta) => { 
-            console.log(resposta)
-            setImage(resposta.data.image)
-            navigate('/hoje')
+            //console.log(resposta);
+            setToken(resposta.data.token);
+            setImage(resposta.data.image);
+            navigate('/hoje');
         });
         promise.catch( erro => 
-            alert(erro), 
+            alert(erro.response.data.message), 
             setDesabilitar(false));
+        
     }
 
     return(
@@ -62,7 +69,7 @@ export default function LoginPage(){
                         onClick={logar} 
                         disabled={desabilitar} 
                         data-test="login-btn">
-                        Entrar
+                            Entrar
                     </Button>
                 <Link to="/cadastro">
                     <ButtonRetorno data-test="signup-link" >Não tem uma conta? Cadastre-se!</ButtonRetorno>

@@ -6,13 +6,15 @@ import RegisterPage from './pages/RegisterPage';
 import HabitPage from './pages/HabitPage';
 import TodayPage from './pages/TodayPage';
 import HistoricPage from './pages/HistoricPage';
+import ResetStyle from './styles/ResetStyle';
 
 export default function App() {
 
   const [image, setImage] = useState('');
-//
+  const [token, setToken] = useState('');
+
   return (
-    <Context.Provider value={{image, setImage}}>
+    <Context.Provider value={{image, setImage, token, setToken}}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage/>}/>
@@ -25,13 +27,7 @@ export default function App() {
     </Context.Provider>
   );
 }
-/*<Context.Provider value={[total, setTotal]}>
-      <div>
-        <p>App.js: { total }</p>
-        <p> DevMedia Context API</p>
-        <Counter />
-      </div>
-    </Context.Provider>*/
+
     
     
         

@@ -1,16 +1,33 @@
 import Header from "../components/Topo";
 import Footer from "../components/Menu";
 import { styled } from "styled-components";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import Context from "../Context";
+import ListaHabitos from "../components/ListaHabitos";
 
 export default function HabitPage(){
-
-    const [mostrar, setMostrar] = useState(false);
-    
-    function aparecerForm(){
-        setMostrar(true);
+    //configurando token
+    const {token, setToken} = useContext(Context);
+    const config = {
+        headers: { Authorization :`Bearer ${token}`}
     }
+    // url axios
+    const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+
+    const [listaHabitos, setListaHabitos] = useState([]);
+
+    //componente listar habitos
+    useEffect(() => {
+        const promise = axios.get(url,config);
+        promise.then(resposta => {
+            console.log(resposta);
+            setListaHabitos(resposta.data);
+        });
+        promise.catch( erro => console.log(erro) );
+    },[]);
+
+    
 
     const array = ["D","S","T","Q","Q","S","S"];
 
@@ -26,9 +43,16 @@ export default function HabitPage(){
             days: arrayDays
         }
 
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits',novoHabito);
-        promise.then(resposta => console.log(resposta));
+        const promise = axios.post(url,novoHabito,config);
+        promise.then(resposta => {
+            console.log(resposta);
+        });
         promise.catch( erro => console.log(erro) );
+    }
+    const [mostrar, setMostrar] = useState(false);
+
+    function aparecerForm(){
+        setMostrar(true);
     }
 
     function addDay(i){
@@ -46,7 +70,7 @@ export default function HabitPage(){
             </Titulo>
             <Habit data-test="habit-create-container">
                 {mostrar===true && (
-                    <div>
+                    <FormHabit>
                         <input
                             data-test="habit-name-input"
                             type="text" 
@@ -57,7 +81,7 @@ export default function HabitPage(){
                         />
                         {array.map( (day,i) => 
                             (
-                            <input 
+                            <InputDay
                                 data-test="habit-day"
                                 type="button" 
                                 key={i} 
@@ -66,25 +90,31 @@ export default function HabitPage(){
                             )
                         )}
     
-                        <button data-test="habit-create-cancel-btn">Cancelar</button>
-                        <button data-test="habit-create-save-btn" onClick={saveHabit}>Salvar</button>
-                    </div>
+                        <ButtonCancelar data-test="habit-create-cancel-btn">Cancelar</ButtonCancelar>
+                        <ButtonSalvar data-test="habit-create-save-btn" onClick={saveHabit}>Salvar</ButtonSalvar>
+                    </FormHabit>
                 )}
+                {listaHabitos.map( listaHabitos => 
+                    <ListaHabitos
+                        key={listaHabitos.id}
+                        name={listaHabitos.name}
+                        days={listaHabitos.days}
+                        array={array}
+                        />
+                    )}
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
             </Habit>
             <Footer/>
         </>
     )
 }
-
-const Titulo = styled.div`
-    width: 100%;
-    height: auto;
-    background-color: rgba(219, 219, 219, 1);
+//listaHabitosSelecionados={listaHabitosSelecionados}
+//setlistaHabitosSelecionados={setlistaHabitosSelecionados}
+const Titulo = styled.div`    
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin: 70px 0;
+    margin-top: 70px;
     h1{
         font-family: Lexend Deca;
         font-weight: 400;
@@ -108,8 +138,7 @@ const Titulo = styled.div`
 `
 const Habit = styled.div`
     width: 100%;
-    height: 100%;
-
+    height: auto;
     p{
         font-family: Lexend Deca;
         font-weight: 400;
@@ -118,4 +147,52 @@ const Habit = styled.div`
         color: rgba(102, 102, 102, 1);
     }
   
+`
+const FormHabit = styled.div`
+    width: 340px;
+    height: 180px;
+    input:nth-child(1){
+        width: 303px;
+        height: 43px;
+        border-radius: 5px;
+        font-family: Lexend Deca;
+        font-weight: 400;
+        font-size: 19.98px;
+        line-height: 24.97px;
+        color: rgba(219, 219, 219, 1);
+    }
+`
+const InputDay = styled.input`
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    font-family: Lexend Deca;
+    font-weight: 400;
+    font-size: 19.98px;
+    line-height: 24.97px;
+    color: rgba(219, 219, 219, 1);
+`
+const ButtonCancelar = styled.button`
+    width: 69px;
+    height: 20px;
+    font-family: Lexend Deca;
+    font-weight: 400;
+    font-size: 15.98px;
+    line-height: 19.97px;
+    text-align: center;
+    color: rgba(82, 182, 255, 1);
+    border: none;
+    background-color: rgba(255, 255, 255, 1);
+`
+const ButtonSalvar = styled.button`
+    width: 84px;
+    height: 35px;
+    border-radius: 5px;
+    font-family: Lexend Deca;
+    font-weight: 400;
+    font-size: 15.98px;
+    line-height: 19.97px;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(82, 182, 255, 1);
 `
