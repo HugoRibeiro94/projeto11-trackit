@@ -4,6 +4,7 @@ import logo from "../assets/logoTrackIt.png"
 import { useContext, useState } from "react"
 import axios from "axios";
 import Context from "../Context";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function RegisterPage(){
 
@@ -12,6 +13,7 @@ export default function RegisterPage(){
     const {image, setImage} = useContext(Context);
     const [password, setPassword] = useState("");
     const [desabilitar,setDesabilitar] = useState(false);
+    const [cadastro, setCadastro] = useState(null);
 
     const navigate = useNavigate();
 
@@ -21,22 +23,24 @@ export default function RegisterPage(){
 
         setDesabilitar(true);
 
-        const novaCadastro = {
+        const novoCadastro = {
             email: email,
             name: name,
             image: image,
             password: password
         }
 
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up',novaCadastro);
-        promise.then((resposta) => { 
+        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up',novoCadastro);
+        promise.then((resposta) => {
+            setCadastro(resposta.data);
+            setDesabilitar(true); 
             navigate('/')
         });
-        promise.catch( erro => 
-            alert(erro.response.data.message), 
-            setDesabilitar(false));
+        promise.catch( erro => { 
+            alert(erro.response.data.message),
+            setDesabilitar(false)});
     }
-
+   
     return(
         <>
             <Container>
@@ -82,7 +86,11 @@ export default function RegisterPage(){
                         onClick={cadastrar} 
                         disabled={desabilitar} 
                         data-test="signup-btn">
-                            Cadastrar
+                            {desabilitar===true ?  
+                                <ThreeDots 
+                                   
+                                /> : 
+                                "Cadastrar" }
                     </Button>
                 
                 <Link to="/">

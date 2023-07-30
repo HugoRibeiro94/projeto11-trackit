@@ -12,7 +12,6 @@ export default function LoginPage(){
     const [password, setPassword] = useState("");
     const [desabilitar,setDesabilitar] = useState(false);
     const {image, setImage} = useContext(Context);
-    const [animacao, setAnimacao] = useState(undefined);
 
     const {token, setToken} = useContext(Context);
 
@@ -31,14 +30,15 @@ export default function LoginPage(){
 
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',login);
         promise.then((resposta) => { 
-            //console.log(resposta);
+            setDesabilitar(true);
             setToken(resposta.data.token);
             setImage(resposta.data.image);
             navigate('/hoje');
         });
-        promise.catch( erro => 
+        promise.catch( erro => {
             alert(erro.response.data.message), 
-            setDesabilitar(false));
+            setDesabilitar(false)
+        }); 
         
     }
 
@@ -69,7 +69,11 @@ export default function LoginPage(){
                         onClick={logar} 
                         disabled={desabilitar} 
                         data-test="login-btn">
-                            Entrar
+                            {desabilitar===true ?  
+                                <ThreeDots 
+                                   
+                                /> : 
+                                "Entrar" }
                     </Button>
                 <Link to="/cadastro">
                     <ButtonRetorno data-test="signup-link" >Não tem uma conta? Cadastre-se!</ButtonRetorno>

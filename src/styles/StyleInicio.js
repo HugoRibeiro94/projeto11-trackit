@@ -21,6 +21,9 @@ const Input = styled.input`
 const Button = styled.button`
     width: 303px;
     height: 45px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 5px;
     background-color: rgba(82, 182, 255, 1);
     font-family: Lexend Deca;
