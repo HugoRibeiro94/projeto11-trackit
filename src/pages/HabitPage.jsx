@@ -22,11 +22,10 @@ export default function HabitPage(){
     useEffect(() => {
         const promise = axios.get(url,config);
         promise.then(resposta => {
-            console.log(resposta);
             setListaHabitos(resposta.data);
         });
         promise.catch( erro => console.log(erro) );
-    },[]);
+    },[listaHabitos]);
 
 
     const arrayDay = ["D","S","T","Q","Q","S","S"];
@@ -45,23 +44,27 @@ export default function HabitPage(){
 
         const promise = axios.post(url,novoHabito,config);
         promise.then(resposta => {
-            console.log(resposta);
-            setDesabilitar(true)
+            console.log(resposta.data.id);
+            setDesabilitar(true);
+            setMostrar(false);
+            setNameHabit(null);
         });
         promise.catch( erro => 
             alert(erro.response.data.message), 
             setDesabilitar(false) );
     }
+
     const [mostrar, setMostrar] = useState(false);
-    
 
     function aparecerForm(){
         setMostrar(true);
+        setDesabilitar(false);
     }
 
     function desaparecerForm(){
         setMostrar(false);
     }
+
     return(
         <>
             <Header/>
@@ -117,9 +120,12 @@ export default function HabitPage(){
                         name={listaHabitos.name}
                         days={listaHabitos.days}
                         arrayDay={arrayDay}
+                        idHabito={listaHabitos.id}
+                        config={config}
                         />
                     )}
-                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+
+                {listaHabitos.lenght===0 && <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
             </Habit>
             <Footer/>
         </>
