@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Context from "../Context";
 import ListaHabitos from "../components/ListaHabitos";
+import InputDay from "../components/InputDay";
 
 export default function HabitPage(){
     //configurando token
@@ -27,20 +28,18 @@ export default function HabitPage(){
         promise.catch( erro => console.log(erro) );
     },[]);
 
-    
 
-    const array = ["D","S","T","Q","Q","S","S"];
+    const arrayDay = ["D","S","T","Q","Q","S","S"];
 
     const [nameHabit, setNameHabit] = useState("");
-    const [arrayDays, setArrayDays] = useState([]);
-    const [desabilitar, setDesabilitar] = useState(false);
+    const [novoArrayDays, setNovoArrayDays] = useState([]);
 
     function saveHabit(event){
         event.preventDefault();
 
         const novoHabito = {
             name: nameHabit,
-            days: arrayDays
+            days: novoArrayDays
         }
 
         const promise = axios.post(url,novoHabito,config);
@@ -50,16 +49,14 @@ export default function HabitPage(){
         promise.catch( erro => console.log(erro) );
     }
     const [mostrar, setMostrar] = useState(false);
+    
 
     function aparecerForm(){
         setMostrar(true);
     }
 
-    function addDay(i){
-        console.log(i);
-        setArrayDays([...arrayDays,i])
-        console.log(arrayDays);
-        
+    function desaparecerForm(){
+        setMostrar(false);
     }
     return(
         <>
@@ -79,18 +76,19 @@ export default function HabitPage(){
                             value={nameHabit}
                             required
                         />
-                        {array.map( (day,i) => 
+                        {arrayDay.map( (arrayDay,i) => 
                             (
                             <InputDay
-                                data-test="habit-day"
-                                type="button" 
-                                key={i} 
-                                value={day} 
-                                onClick={()=>addDay(i)}/>
+                                key={i}
+                                i={i} 
+                                arrayDay={arrayDay}
+                                novoArrayDays={novoArrayDays}
+                                setNovoArrayDays={setNovoArrayDays}
+                                ></InputDay>
                             )
                         )}
     
-                        <ButtonCancelar data-test="habit-create-cancel-btn">Cancelar</ButtonCancelar>
+                        <ButtonCancelar data-test="habit-create-cancel-btn" onClick={desaparecerForm}>Cancelar</ButtonCancelar>
                         <ButtonSalvar data-test="habit-create-save-btn" onClick={saveHabit}>Salvar</ButtonSalvar>
                     </FormHabit>
                 )}
@@ -99,7 +97,7 @@ export default function HabitPage(){
                         key={listaHabitos.id}
                         name={listaHabitos.name}
                         days={listaHabitos.days}
-                        array={array}
+                        arrayDay={arrayDay}
                         />
                     )}
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
@@ -161,16 +159,6 @@ const FormHabit = styled.div`
         line-height: 24.97px;
         color: rgba(219, 219, 219, 1);
     }
-`
-const InputDay = styled.input`
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    font-family: Lexend Deca;
-    font-weight: 400;
-    font-size: 19.98px;
-    line-height: 24.97px;
-    color: rgba(219, 219, 219, 1);
 `
 const ButtonCancelar = styled.button`
     width: 69px;
