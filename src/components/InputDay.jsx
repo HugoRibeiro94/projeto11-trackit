@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 
 export default function InputDay(props){ 
 
-    const {novoArrayDays,setNovoArrayDays,arrayDay,i} = props
+    const {desabilitar,setDesabilitar,novoArrayDays,setNovoArrayDays,arrayDay,i} = props
     const [selecionado, setSelecionado] = useState("");
     //console.log(selecionado)
     //console.log(arrayDay)
@@ -28,6 +28,7 @@ export default function InputDay(props){
             type="button"
             value={arrayDay}
             selected={selecionado}
+            disabled={desabilitar}
             onClick={()=>addDay(i,selecionado,novoArrayDays)}
             />
         </>

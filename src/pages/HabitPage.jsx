@@ -33,6 +33,7 @@ export default function HabitPage(){
 
     const [nameHabit, setNameHabit] = useState("");
     const [novoArrayDays, setNovoArrayDays] = useState([]);
+    const [desabilitar,setDesabilitar] = useState(false);
 
     function saveHabit(event){
         event.preventDefault();
@@ -45,8 +46,11 @@ export default function HabitPage(){
         const promise = axios.post(url,novoHabito,config);
         promise.then(resposta => {
             console.log(resposta);
+            setDesabilitar(true)
         });
-        promise.catch( erro => console.log(erro) );
+        promise.catch( erro => 
+            alert(erro.response.data.message), 
+            setDesabilitar(false) );
     }
     const [mostrar, setMostrar] = useState(false);
     
@@ -74,6 +78,7 @@ export default function HabitPage(){
                             placeholder="nome do habito" 
                             onChange={ e => setNameHabit(e.target.value)} 
                             value={nameHabit}
+                            disabled={desabilitar}
                             required
                         />
                         {arrayDay.map( (arrayDay,i) => 
@@ -81,6 +86,8 @@ export default function HabitPage(){
                             <InputDay
                                 key={i}
                                 i={i} 
+                                desabilitar={desabilitar}
+                                setDesabilitar={setDesabilitar}
                                 arrayDay={arrayDay}
                                 novoArrayDays={novoArrayDays}
                                 setNovoArrayDays={setNovoArrayDays}
@@ -88,8 +95,20 @@ export default function HabitPage(){
                             )
                         )}
     
-                        <ButtonCancelar data-test="habit-create-cancel-btn" onClick={desaparecerForm}>Cancelar</ButtonCancelar>
-                        <ButtonSalvar data-test="habit-create-save-btn" onClick={saveHabit}>Salvar</ButtonSalvar>
+                        <ButtonCancelar 
+                            data-test="habit-create-cancel-btn" 
+                            onClick={desaparecerForm}
+                            disabled={desabilitar}
+                        >
+                            Cancelar
+                        </ButtonCancelar>
+                        <ButtonSalvar 
+                            data-test="habit-create-save-btn" 
+                            onClick={saveHabit}
+                            disabled={desabilitar}
+                        >
+                            Salvar
+                        </ButtonSalvar>
                     </FormHabit>
                 )}
                 {listaHabitos.map( listaHabitos => 
@@ -146,7 +165,7 @@ const Habit = styled.div`
     }
   
 `
-const FormHabit = styled.div`
+const FormHabit = styled.form`
     width: 340px;
     height: 180px;
     input:nth-child(1){
