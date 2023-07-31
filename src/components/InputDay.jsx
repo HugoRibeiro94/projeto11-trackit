@@ -5,9 +5,7 @@ export default function InputDay(props){
 
     const {desabilitar,setDesabilitar,novoArrayDays,setNovoArrayDays,arrayDay,i} = props
     const [selecionado, setSelecionado] = useState("");
-    //console.log(selecionado)
-    //console.log(arrayDay)
-    //console.log(i)
+    
     function addDay(i,selecionado){
         console.log(i);
         console.log(arrayDay);

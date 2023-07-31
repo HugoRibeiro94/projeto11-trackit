@@ -30,11 +30,14 @@ export default function ListaHabitos({name,days,arrayDay,idHabito,config}){
 }
 const Lista = styled.div`
     width: 340px;
-    height: 180px;
+    height: 150px;
     position: relative;
+    border: solid 1px #a4a3a3;
+    margin-bottom: 10px;
     p{
         width: 303px;
         height: 43px;
+        margin-left: 10px;
         border-radius: 5px;
         font-family: Lexend Deca;
         font-weight: 400;

@@ -8,17 +8,16 @@ import ListaHabitos from "../components/ListaHabitos";
 import InputDay from "../components/InputDay";
 
 export default function HabitPage(){
-    //configurando token
+   
     const {token, setToken} = useContext(Context);
     const config = {
         headers: { Authorization :`Bearer ${token}`}
     }
-    // url axios
+   
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
 
     const [listaHabitos, setListaHabitos] = useState([]);
 
-    //componente listar habitos
     useEffect(() => {
         const promise = axios.get(url,config);
         promise.then(resposta => {
@@ -131,8 +130,7 @@ export default function HabitPage(){
         </>
     )
 }
-//listaHabitosSelecionados={listaHabitosSelecionados}
-//setlistaHabitosSelecionados={setlistaHabitosSelecionados}
+
 const Titulo = styled.div`    
     display: flex;
     justify-content: space-around;
@@ -162,6 +160,9 @@ const Titulo = styled.div`
 const Habit = styled.div`
     width: 100%;
     height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     p{
         font-family: Lexend Deca;
         font-weight: 400;
